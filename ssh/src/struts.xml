@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+<constant name="struts.i18n.encoding" value="utf-8"></constant>
+<package name="ssh" extends="struts-default">
+<!-- 配置拦截器AuthorityInterceptor -->
+	    <interceptors>
+	    	<interceptor name="loginCheck" class="com.restrant.interceptor.AuthorityInterceptor" />
+	    </interceptors>
+	    <!-- 设置全局的返回值,返回首页 -->         
+	    <global-results>             
+	    	<result name="login" type="redirectAction">/toShowMeal</result>         
+	    </global-results>    
+	    <!-- 为MealAction类中的toShowMeal方法配置映射 -->
+		<action name="toShowMeal" class="mealAction" method="toShowMeal">
+			<result name="toShowMeal">/show.jsp</result>			
+		</action>
+		
+		<!-- 登陆 -->
+		<action name="validateLogin" class="userAction" method="validateLogin">
+			<result name="toShowMeal" type="redirectAction">toShowMeal</result>
+			<result name="login">/login.html</result>
+			<result name="loginAdmin">/login_admin.html</result>
+		</action>
+		
+		<!-- 注销 -->
+		<action name="loginOut" class="userAction" method="logOut">
+			<result name="show" type="redirectAction">toShowMeal</result>
+		</action>
+		
+		<!-- 注册 -->
+		<action name="register" class="userAction" method="register">
+			<result name="show" type="redirectAction">toShowMeal</result>
+		</action>
+		
+		<!-- 修改 -->
+		<action name="modifyUsers" class="userAction" method="modifyUsers">			
+			<result name="show" type="redirectAction">toShowMeal</result>	
+		</action>
+		
+		<action name="toShowDetails" class="mealAction" method="toShowDetails">
+			<result name="toShowDetails">/details.html</result>
+			<!-- 
+			<interceptor-ref name="loginCheck" />	
+			 -->	
+			<interceptor-ref name="defaultStack" />				
+		</action>
+		
+		<!-- 添加商品 -->
+		<action name="toAddMeal" class="mealAction" method="toAddMeal">
+			<result name="addMeal">/addMeal.jsp</result>	
+			<interceptor-ref name="loginCheck" />	
+			<interceptor-ref name="defaultStack" />				
+		</action>
+</package>
+</struts>    
